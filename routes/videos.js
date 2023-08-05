@@ -3,20 +3,19 @@ const router = express.Router();
 const VideoModel = require("../models/video")
 
 router.get("/", (req, res) => {
-    // get from databse
+    // get video from databse
 
     // response:
     // video_id
     // thumbnail_image_url
-    // const video = await VideoModel.find();
     VideoModel.find({}, "title thumbnail_url").exec()
-    .then((data) => {
-        res.status(200);
-        res.send(data);
-    }).catch((e) => {
-        res.status(400);
-        res.send("failed");
-    });
+        .then((data) => {
+            res.status(200);
+            res.send(data);
+        }).catch((e) => {
+            res.status(400);
+            res.send("failed");
+        });
 });
 
 function id_extractor(url) {
@@ -44,18 +43,19 @@ router.post("/", (req, res) => {
     });
 
     video.save()
-        .then(() => {
+        .then((saved_data) => {
             res.status(201);
             res.send({
                 "status": "success",
-                "msg": "berhasil menimpan"
+                "msg": "berhasil menyimpan video",
+                "data": saved_data
             })
         }).catch((e) => {
             console.log(e)
             res.status(500);
             res.send({
                 "status": "failed",
-                "msg": "gagal menimpan"
+                "msg": "gagal menyimpan video"
             })
         });
 });

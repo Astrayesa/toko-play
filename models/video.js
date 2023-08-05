@@ -1,6 +1,7 @@
 // video model using mongoose
 const mongoose = require("mongoose");
 const connection_string = "mongodb://127.0.0.1:27017/tokoplay";
+const ProductModel = require("../models/product");
 
 main().catch((err) => console.log(err));
 async function main() {
@@ -10,25 +11,9 @@ async function main() {
 const videoSchema = new mongoose.Schema({
     title: String,
     url: String,
-    thumbnail_url: String
+    thumbnail_url: String,
+    products: [ProductModel.schema]
 });
 const Video = mongoose.model("Video", videoSchema);
 
-function get_video_list() {
-    mongoose.connect(connection_string, { useNewUrlParser: true, useUnifiedTopology: true })
-        .then(() => {
-            return Video.find()
-                .then((data) => {
-                    console.log("get from database");
-                    console.log(data);
-                    return data;
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-        })
-        .then(() => mongoose.disconnect())
-}
-
-// export { get_video_list, save_video }
 module.exports = Video
