@@ -1,35 +1,54 @@
 // comments router
 const express = require("express")
 const router = express.Router();
+const CommentModel = require("../models/comment")
 
 router.get("/", (req, res) => {
-    const video_id = req.query.video_id;
-    result = {
-        username: "username",
-        comment: "comment",
-        timestamps: Date.now(),
-        video_id: video_id
-    };
-    res.send(result);
+    const { video_id } = req.body;
+    CommentModel.find({ video_id: video_id }).exec()
+        .then((data) => {
+            res.status(200);
+            res.send(data);
+        }).catch((e) => {
+            res.status(400);
+            res.send("failed");
+        });
 });
 
 router.post("/", (req, res) => {
-    const video_id = req.query.video_id;
-    console.log(req.params)
-    console.log(req.body)
-    const { username, comment, timestamps } = req.body
-    result = {
+    // body:
+    // username
+    // comment
+    // video_id
+
+    // response:
+    // status
+    // saved comment
+
+    const { username, comment, video_id } = req.body
+
+    const comment_model = new CommentModel({
         username: username,
         comment: comment,
-        timestamps: timestamps,
         video_id: video_id
-    };
-    // save result to db
-    res.status(201);
-    res.send({
-        status: "success",
-        result: result
-    });
+    })
+
+    comment_model.save()
+        .then((saved_data) => {
+            res.status(201);
+            res.send({
+                "status": "success",
+                "msg": "Berhasil menyimpan komentar",
+                "data": saved_data
+            })
+        }).catch((e) => {
+            console.log(e)
+            res.status(500);
+            res.send({
+                "status": "failed",
+                "msg": "Gagal menyimpan komentar"
+            })
+        });
 });
 
 module.exports = router;

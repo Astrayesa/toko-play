@@ -52,7 +52,7 @@ router.post("/", (req, res) => {
         console.log("error: failed create model");
     }
     VideoModel.updateOne({ _id: video_id }, { $push: { products: product } })
-        .then((saved_data) => {
+        .then(() => {
             res.status(201);
             res.send({
                 "status": "success",
