@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
     // get video from databse
 
     // response:
-    // video_id
+    // _id
     // thumbnail_image_url
     VideoModel.find({}, "title thumbnail_url").exec()
         .then((data) => {
@@ -14,8 +14,40 @@ router.get("/", (req, res) => {
             res.send(data);
         }).catch((e) => {
             res.status(400);
-            res.send("failed");
+            res.send({
+                status: 404,
+                msg: "Gagal mendapatkan data video"
+            });
         });
+});
+
+router.get("/:video_id", (req, res) => {
+    // get video detail
+
+    // param:
+    // video_id
+
+    // response
+    // _id
+    // title
+    // thumbnail_url
+    // yt_url
+    // product list
+
+    VideoModel.findById(req.params.video_id).exec()
+        .then((data) => {
+            res.status(200);
+            res.send(data);
+        }).catch((e) => {
+            // log error
+            console.error(e);
+
+            res.status(404);
+            res.send({
+                status: 404,
+                msg: "Video tidak ditemukan"
+            })
+        })
 });
 
 function id_extractor(url) {
@@ -46,16 +78,16 @@ router.post("/", (req, res) => {
         .then((saved_data) => {
             res.status(201);
             res.send({
-                "status": "success",
-                "msg": "berhasil menyimpan video",
+                "status": 201,
+                "msg": "Berhasil menambahkan video",
                 "data": saved_data
             })
         }).catch((e) => {
             console.log(e)
-            res.status(500);
+            res.status(400);
             res.send({
-                "status": "failed",
-                "msg": "gagal menyimpan video"
+                "status": 400,
+                "msg": "Gagal menambahkan video"
             })
         });
 });
