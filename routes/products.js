@@ -4,10 +4,10 @@ const router = express.Router();
 const VideoModel = require("../models/video")
 const ProductModel = require("../models/product")
 
-router.get("/", (req, res) => {
+router.get("/:video_id", (req, res) => {
     // get product from databse
 
-    // query:
+    // param:
     // video_id,
 
     // response:
@@ -15,10 +15,8 @@ router.get("/", (req, res) => {
     // product_link
     // product_title
     // price
-    const { video_id } = req.body;
-    console.log(video_id);
 
-    VideoModel.findById(video_id, "products").exec()
+    VideoModel.findById(req.params.video_id, "products").exec()
         .then((data) => {
             res.status(200);
             res.send(data);
@@ -31,7 +29,7 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
     // save product to database
 
-    // query:
+    // body:
     // product_title
     // product_link
     // price
@@ -39,8 +37,9 @@ router.post("/", (req, res) => {
     // response:
     // status
     // message
+    const { video_id } = req.params;
 
-    const { product_title, product_link, price, video_id } = req.body;
+    const { product_title, product_link, price } = req.body;
 
 
     const product = new ProductModel({
@@ -48,23 +47,21 @@ router.post("/", (req, res) => {
         url: product_link,
         price: price
     })
-    if (!product) {
-        console.log("error: failed create model");
-    }
+
     VideoModel.updateOne({ _id: video_id }, { $push: { products: product } })
         .then(() => {
             res.status(201);
             res.send({
-                "status": "success",
-                "msg": "berhasil menyimpan produk baru",
+                "status": 201,
+                "msg": "Berhasil menambahkan produk baru",
                 "data": product
             })
         }).catch((e) => {
             console.log(e)
-            res.status(500);
+            res.status(400);
             res.send({
-                "status": "failed",
-                "msg": "gagal menyimpan produk baru"
+                "status": 400,
+                "msg": "Gagal menambahkan produk"
             })
         });
 })

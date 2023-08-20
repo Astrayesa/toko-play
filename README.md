@@ -132,3 +132,72 @@ Add new video
         msg: "Gagal menambahkan video"
     }
     ```
+
+### GET /products/:video_id
+Return all comment of specific video
+
+* params:
+    * video_id: [ObjectID]
+
+* Headers:
+    * Content-Type: application/json
+
+* Success response:
+    * Status code: 200
+    * Content:
+    ```JSON
+    [
+        <Produt Object>,
+        <Produt Object>,
+        ...
+    ]
+    ```
+
+* Error response: 
+    * Status code: 404
+    * Content:
+    ```JSON
+    {
+        status: 404,
+        msg: "Prodcut tidak ditemukan"
+    }
+    ```
+
+### POST /products/:video_id
+Add new product to specific video
+
+* Headers:
+    * Content-Type: application/json
+
+* param:
+    * video_id: [ObjectID]
+
+* Body:
+```JSON
+{
+    product_title: string,
+    product_link: string,
+    price: integer
+}
+```
+
+* Success response:
+    * Status code: 201
+    * Content:
+    ```JSON
+    {
+        status: 201,
+        msg: "Berhasil menambahkan produk baru"
+        data: <Prodcut Object>
+    }
+    ```
+
+* Error response:
+    * Status code: 400
+    * Content:
+    ```JSON
+    {
+        status: 400,
+        msg: "Gagal menambahkan produk"
+    }
+    ```

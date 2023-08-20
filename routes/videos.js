@@ -60,9 +60,10 @@ function id_extractor(url) {
 router.post("/", (req, res) => {
     // post to database
 
-    // param
+    // bocy
     // video_title
     // video_url
+
     const { video_title, video_url } = req.body;
     const yt_video_id = id_extractor(video_url);
     const thumbnail_image_url = `https://img.youtube.com/vi/${yt_video_id}/0.jpg`;
