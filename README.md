@@ -133,6 +133,17 @@ Add new video
     }
     ```
 
+### Product Schema
+
+```JSON
+{
+    _id: ObjectID
+    title: string
+    url: string
+    price: integer
+}
+```
+
 ### GET /products/:video_id
 Return all comment of specific video
 
@@ -159,7 +170,7 @@ Return all comment of specific video
     ```JSON
     {
         status: 404,
-        msg: "Prodcut tidak ditemukan"
+        msg: "Produk tidak ditemukan"
     }
     ```
 
@@ -188,7 +199,7 @@ Add new product to specific video
     {
         status: 201,
         msg: "Berhasil menambahkan produk baru"
-        data: <Prodcut Object>
+        data: <Product Object>
     }
     ```
 
@@ -199,5 +210,86 @@ Add new product to specific video
     {
         status: 400,
         msg: "Gagal menambahkan produk"
+    }
+    ```
+
+### Comment Schema
+
+```JSON
+{
+    _id: ObjectID
+    username: string
+    comment: string
+    price: integer
+    createdAt: Date
+    updatedAt: Date
+}
+```
+
+### GET /comments/:video_id
+Return all comment of specific video
+
+* params:
+    * video_id: [ObjectID]
+
+* Headers:
+    * Content-Type: application/json
+
+* Success response:
+    * Status code: 200
+    * Content:
+    ```JSON
+    [
+        <Produt Object>,
+        <Produt Object>,
+        ...
+    ]
+    ```
+
+* Error response: 
+    * Status code: 404
+    * Content:
+    ```JSON
+    {
+        status: 404,
+        msg: "komentar tidak ditemukan"
+    }
+    ```
+
+### POST /comments/:video_id
+Add new comment to specific video
+
+* Headers:
+    * Content-Type: application/json
+
+* param:
+    * video_id: [ObjectID]
+
+* Body:
+```JSON
+{
+    username: string,
+    comment: string
+}   
+```
+
+* Success response:
+    * Status code: 201
+    * Content:
+    ```JSON
+    {
+        status: 201,
+        msg: "Berhasil menambahkan komentar baru"
+        data: <comment Object>
+    }
+    ```
+
+* Error response:
+    * Status code: 400
+    * Content:
+    ```JSON
+    {
+        status: 400,
+        msg: "Gagal menambahkan komentar"
     }
     ```

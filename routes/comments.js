@@ -3,29 +3,46 @@ const express = require("express")
 const router = express.Router();
 const CommentModel = require("../models/comment")
 
-router.get("/", (req, res) => {
-    const { video_id } = req.body;
+router.get("/:video_id", (req, res) => {
+    // get comments from databse
+
+    // param:
+    // video_id,
+
+    // response:
+    // _id
+    // username
+    // comment
+
+    const { video_id } = req.params;
     CommentModel.find({ video_id: video_id }).exec()
         .then((data) => {
             res.status(200);
             res.send(data);
         }).catch((e) => {
             res.status(400);
-            res.send("failed");
+            res.send({
+                status: 404,
+                msg: "Gagal mendapatkan data komentar"
+            });
         });
 });
 
-router.post("/", (req, res) => {
+router.post("/:video_id", (req, res) => {
+    // query:
+    // video_id
+
     // body:
     // username
     // comment
-    // video_id
 
     // response:
     // status
     // saved comment
 
-    const { username, comment, video_id } = req.body
+    const { video_id } = req.params;
+
+    const { username, comment } = req.body
 
     const comment_model = new CommentModel({
         username: username,
@@ -37,15 +54,15 @@ router.post("/", (req, res) => {
         .then((saved_data) => {
             res.status(201);
             res.send({
-                "status": "success",
+                "status": 201,
                 "msg": "Berhasil menyimpan komentar",
                 "data": saved_data
             })
         }).catch((e) => {
             console.log(e)
-            res.status(500);
+            res.status(400);
             res.send({
-                "status": "failed",
+                "status": 400,
                 "msg": "Gagal menyimpan komentar"
             })
         });

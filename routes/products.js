@@ -1,19 +1,19 @@
-// product rotuer
+// product router
 const express = require("express")
 const router = express.Router();
 const VideoModel = require("../models/video")
 const ProductModel = require("../models/product")
 
 router.get("/:video_id", (req, res) => {
-    // get product from databse
+    // get products from databse
 
     // param:
     // video_id,
 
     // response:
-    // product_id
-    // product_link
-    // product_title
+    // _id
+    // title
+    // url
     // price
 
     VideoModel.findById(req.params.video_id, "products").exec()
@@ -21,8 +21,11 @@ router.get("/:video_id", (req, res) => {
             res.status(200);
             res.send(data);
         }).catch((e) => {
-            res.status(400);
-            res.send("failed");
+            res.status(404);
+            res.send({
+                status: 404,
+                msg: "Produk tidak ditemukan"
+            });
         });
 });
 
