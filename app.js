@@ -6,7 +6,7 @@ const cors = require('cors')
 const mongoose = require("mongoose");
 
 // setup database connection
-const connection_string = "mongodb://127.0.0.1:27017/tokoplay";
+const connection_string =  process.env.MONGO_URL || "mongodb://127.0.0.1:27017/tokoplay";
 
 main().catch((err) => console.log(err));
 async function main() {

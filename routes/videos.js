@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
             res.status(200);
             res.send(data);
         }).catch((e) => {
-            res.status(400);
+            res.status(404);
             res.send({
                 status: 404,
                 msg: "Gagal mendapatkan data video"
@@ -85,9 +85,9 @@ router.post("/", (req, res) => {
             })
         }).catch((e) => {
             console.log(e)
-            res.status(400);
+            res.status(500);
             res.send({
-                "status": 400,
+                "status": 500,
                 "msg": "Gagal menambahkan video"
             })
         });
